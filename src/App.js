@@ -7,7 +7,8 @@ export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      search: ""
     };
   }
 
@@ -21,28 +22,35 @@ export class App extends Component {
       });
   }
 
-  searchBar = term => {
-    for (let i = 0; i < this.state.books.length; i++) {
-      let title = this.state.books[i].title;
-      let description = this.state.books[i].description;
-      if (title.includes(term) || description.includes(term)) {
-        // this.setState (UPDATE STATE HERE)
-        console.log(this.state.books[i]);
-      }
-    }
+  handleSearch = search => {
+    this.setState({ search });
+  };
+
+  searchBar = () => {
+    let search = this.state.books.filter(books => {
+      return (
+        books.title.includes(this.state.search) ||
+        books.description.includes(this.state.search)
+      );
+    });
+    return search;
   };
 
   render() {
+    const filteredBooks = this.searchBar();
+    console.log(filteredBooks);
     return (
       <div className="App">
-        <Header search={this.searchBar} />
+        <Header search={this.handleSearch} />
         <div className="content-container">
-          {this.state.books.map((book, index) => {
-            return <Book key={index} book={book} />;
-          })}
+          {this.state.books &&
+            filteredBooks.map((book, index) => {
+              return <Book key={index} book={book} />;
+            })}
         </div>
       </div>
     );
   }
 }
+
 export default App;

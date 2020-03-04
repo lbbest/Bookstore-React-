@@ -7,7 +7,7 @@ export default class Header extends Component {
         <h1 id="header-title">Ubiqum Bookstore</h1>
         <input
           id="search-bar"
-          onKeyUp={event => this.props.search(event.target.value)}
+          onChange={event => this.props.search(event.target.value)}
           type="textarea"
           placeholder="Search..."
         ></input>
