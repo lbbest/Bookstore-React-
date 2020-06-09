@@ -8,30 +8,34 @@ export class App extends Component {
     super(props);
     this.state = {
       books: [],
-      search: ""
+      search: "",
     };
   }
 
   componentDidMount() {
-    fetch("https://api.myjson.com/bins/zyv02")
-      .then(res => {
+    fetch(
+      // "https://cors-anywhere.herokuapp.com/https://api.itbook.store/1.0/search/react/"
+      "https://www.googleapis.com/books/v1/volumes?q=code+insubject:programming&maxResults=40&printType=books&key=AIzaSyD_2gAgLSkD5ZeqmMjVqboYNdtBJ2R6ZFg"
+    )
+      .then((res) => {
         return res.json();
       })
-      .then(result => {
-        this.setState({ books: result.books });
+      .then((result) => {
+        // console.log(result);
+        this.setState({ books: result.items });
       });
   }
 
-  handleSearch = search => {
+  handleSearch = (search) => {
     this.setState({ search });
   };
 
   searchBar = () => {
-    let search = this.state.books.filter(books => {
-      return (
-        books.title.includes(this.state.search) ||
-        books.description.includes(this.state.search)
-      );
+    let search = this.state.books.filter((books) => {
+      return books.volumeInfo.title
+        .toUpperCase()
+        .includes(this.state.search.toUpperCase()); // ||
+      // books.volumeInfo.subtitle.includes(this.state.search)
     });
     return search;
   };
